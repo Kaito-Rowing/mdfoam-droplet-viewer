@@ -1,5 +1,7 @@
 <div align="center">
 
+<h1>mdFOAM Droplet Viewer</h1>
+
 <img src="docs/img/banner.svg" alt="mdFOAM Droplet Viewer — Your simulations. Your models." width="100%">
 
 <br>
