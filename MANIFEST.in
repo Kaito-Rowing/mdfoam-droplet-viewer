@@ -1,4 +1,4 @@
 include LICENSE THIRD_PARTY_NOTICES.md CHANGELOG.md
-recursive-include docs *.md *.png
+recursive-include docs *.md *.png *.svg
 recursive-include examples *.py *.toml
 recursive-include tests *.py
