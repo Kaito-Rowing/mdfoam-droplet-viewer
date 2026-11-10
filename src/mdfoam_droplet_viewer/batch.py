@@ -12,6 +12,7 @@ import traceback
 from concurrent.futures import FIRST_COMPLETED, Future, ProcessPoolExecutor, wait
 from dataclasses import dataclass, field
 from pathlib import Path
+from multiprocessing import get_context
 
 from . import __version__
 from .analysis import case_ctx, derive_gas_density, derive_normalized, process_case_times, summarize
@@ -200,7 +201,9 @@ class Analyzer:
             self.run_meta = self._meta(cases, s)
 
         if tasks:
-            with ProcessPoolExecutor(max_workers=self.workers) as pool:
+        # Forking a threaded GUI/MCP process can inherit locked runtime state.
+        # Spawn gives identical, independent worker initialization on every OS.
+        with ProcessPoolExecutor(max_workers=self.workers, mp_context=get_context("spawn")) as pool:
                 futs: dict[Future, tuple] = {}
                 for c, ts in tasks:
                     f = pool.submit(process_case_times, c.name, str(c.root), str(c.data_dir), ts, sdict, cache_dir)
