@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="380" viewBox="0 0 1280 380" role="img" aria-labelledby="title description">
   <title id="title">mdFOAM Droplet Viewer</title>
-  <desc id="description">Your simulations. Your models. Droplet analysis through a browser, a JSON CLI and MCP. An illustrative droplet and comparison curves appear on the right.</desc>
+  <desc id="description">Your simulations. Your models. Droplet analysis with SSH/SFTP input, a browser, a JSON CLI and MCP. An illustrative droplet and comparison curves appear on the right.</desc>
   <defs>
     <linearGradient id="background" x2="1" y2="1">
       <stop stop-color="#0b1822"/>
@@ -32,6 +32,8 @@
       <text x="183" y="23" text-anchor="middle" fill="#a6c8f8">JSON CLI</text>
       <rect x="252" width="114" height="36" rx="18" fill="#302d3e" stroke="#5e506c"/>
       <text x="309" y="23" text-anchor="middle" fill="#d8bdf1">MCP</text>
+      <rect x="378" width="132" height="36" rx="18" fill="#193c42" stroke="#35625f"/>
+      <text x="444" y="23" text-anchor="middle" fill="#94e8d0">SSH / SFTP</text>
     </g>
     <g transform="translate(810 50)">
       <rect width="400" height="262" rx="14" fill="#0d202a" stroke="#34515c"/>
