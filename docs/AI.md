@@ -2,6 +2,8 @@
 
 Run `mdfoam-droplet schema` or the MCP `schema` tool before building requests. Both return the authoritative JSON Schemas, quantity names, model definition and explicit presets. No scientific field/threshold choice should be inferred from the project name.
 
+To build new capabilities with a coding assistant, see [Make it yours, with AI](CUSTOMIZE.md) for setup prompts, customization examples, a code map, and verification guidance.
+
 ## Transport and state
 
 - GUI: POST `/api/v1/{operation}` with a JSON request body.

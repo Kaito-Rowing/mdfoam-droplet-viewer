@@ -8,7 +8,7 @@
 
 **An extensible workspace for mdFOAM droplet analysis.**
 
-Connect over SSH. Explore in the browser. Automate with AI. Bring your own models.
+Connect over SSH. Analyze with AI. Make it yours.
 
 [![CI](https://github.com/Kaito-Rowing/mdfoam-droplet-viewer/actions/workflows/ci.yml/badge.svg)](https://github.com/Kaito-Rowing/mdfoam-droplet-viewer/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Kaito-Rowing/mdfoam-droplet-viewer?color=64cdb0&label=release)](https://github.com/Kaito-Rowing/mdfoam-droplet-viewer/releases/latest)
@@ -25,6 +25,8 @@ Connect over SSH. Explore in the browser. Automate with AI. Bring your own model
 
 Turn ASCII OpenFOAM outputs into droplet measurements, comparisons, and fitted models. Choose your fields, species, thresholds, and substrate orientation, then use the same analysis engine through a **browser GUI**, a **JSON CLI**, or **MCP tools**.
 
+**Build the tool your research needs—with AI.** Fork this project, open it in a coding assistant, and add your own models, measurements, plots, or interface. This is a starting point for your workflow: you're invited to reshape it. [See the customization guide →](docs/CUSTOMIZE.md)
+
 **Your results can stay on the compute server until you need them.** Browse cases over SSH/SFTP, retrieve the files needed for your analysis, and explore the results locally.
 
 <p align="center">
@@ -35,10 +37,10 @@ Turn ASCII OpenFOAM outputs into droplet measurements, comparisons, and fitted m
 
 ## Built for the way you work
 
-| Explore visually | Automate with AI | Extend with your science |
+| Explore visually | Automate with AI | Build it with AI |
 | :--- | :--- | :--- |
-| Compare runs, inspect density slices and sphere fits, and explore 3D data. | Discover schemas, launch analysis, monitor jobs, fit models, and export figures. | Enter an expression or install a Python model with your own numerical methods. |
-| **Browser GUI** | **JSON CLI + stdio MCP** | **Expressions + Python extensions** |
+| Compare runs, inspect density slices and sphere fits, and explore 3D data. | Discover schemas, launch analysis, monitor jobs, fit models, and export figures. | Bring your ideas to a coding assistant and build the models, measurements, and interface your research needs. |
+| **Browser GUI** | **JSON CLI + stdio MCP** | **Custom models + source customization** |
 
 - **Measure droplets** — volume, equivalent radius, contact angle/radius, temperature, and ideal-gas pressure estimates.
 - **Connect to your compute server** — browse remote cases over SSH/SFTP, transfer selected fields and timesteps, and reuse up-to-date local copies.
@@ -48,6 +50,22 @@ Turn ASCII OpenFOAM outputs into droplet measurements, comparisons, and fitted m
 ## Quick start
 
 Requires **Python 3.10+**. Tested on **Windows, Linux, and macOS**.
+
+### Ask AI to get you started
+
+Give a coding assistant with terminal and file access this repository URL and the prompt below. It can help set up the environment, run the example, and adapt the project with you.
+
+```text
+Help me get started with https://github.com/Kaito-Rowing/mdfoam-droplet-viewer.
+Read the README and docs/AI.md, clone the project, create a Python virtual
+environment, and install it with MCP support. Run the synthetic-data workflow
+in examples/ai_workflow.py and check that it produces a fitted-model PNG.
+Show me how to launch the browser interface and where the output files are.
+```
+
+Already have an idea? Add: **“Then help me customize it for my research: [describe your data, analysis, or desired plot].”** [The customization guide](docs/CUSTOMIZE.md) has ready-to-use prompts and a map of where to make changes.
+
+### Or set it up yourself
 
 ```sh
 git clone https://github.com/Kaito-Rowing/mdfoam-droplet-viewer.git
@@ -179,6 +197,20 @@ Model definitions and fitted curves travel with saved snapshots. Expressions use
 
 → **[Extension contract & working template](docs/EXTENSIONS.md)** · [Python model example](examples/model-plugin)
 
+### Make it yours, with AI
+
+Want another measurement, a different visualization, or a workflow for your lab? Fork the repository and build it with a coding assistant. Start with the existing model interfaces for formulas and numerical models; edit the shared analysis or UI when your idea needs more.
+
+```text
+Read docs/CUSTOMIZE.md and help me adapt this project to my research.
+I want to add [describe the feature]. Inspect the existing implementation,
+identify the inputs and units we need, then implement it using the shared
+analysis layer where appropriate. Add a synthetic example, verify the result,
+and document how to use it.
+```
+
+→ **[Build with AI: prompts, code map & verification](docs/CUSTOMIZE.md)**
+
 ## Documentation
 
 | Start here | Go deeper |
@@ -186,6 +218,7 @@ Model definitions and fitted curves travel with saved snapshots. Expressions use
 | [日本語ガイド](docs/README.ja.md) — installation and everyday use | [Data & methods](docs/REFERENCE.md) — formats, numerical assumptions, storage, and export |
 | [AI operation guide](docs/AI.md) — CLI and MCP workflows | [Model extensions](docs/EXTENSIONS.md) — expressions and Python plugins |
 | [Runnable automation example](examples/ai_workflow.py) | [Releases](https://github.com/Kaito-Rowing/mdfoam-droplet-viewer/releases) · [Changelog](CHANGELOG.md) |
+| [Build with AI](docs/CUSTOMIZE.md) — setup prompts and research-specific changes | [Code map & verification](docs/CUSTOMIZE.md#where-to-make-changes) — where to edit and how to check the result |
 
 **Current scope:** ASCII OpenFOAM fields, spherical contact-angle fits, and axis-aligned flat substrates. Pressure is an ideal-gas estimate. Phase thresholds are dataset-specific; multiple droplets are not tracked independently. See [methods and limits](docs/REFERENCE.md#input-methods-and-limits) for details.
 
