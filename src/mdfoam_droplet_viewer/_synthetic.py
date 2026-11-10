@@ -105,4 +105,3 @@ def write_field(path: Path, values, dims="[1 -3 0 0 0 0 0]", uniform=None):
     else:
         internal = f"internalField   nonuniform List<scalar> \n{len(values)}\n(\n" + "\n".join(f"{v:.12g}" for v in values) + "\n)\n;"
     path.write_text(HDR.format(cls="volScalarField", obj=path.name) + f"dimensions      {dims};\n\n{internal}\n\nboundaryField\n{{\n}}\n")
-

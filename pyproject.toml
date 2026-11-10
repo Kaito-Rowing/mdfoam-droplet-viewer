@@ -9,6 +9,7 @@ description = "Extensible mdFOAM droplet analysis for humans and AI: GUI, JSON C
 requires-python = ">=3.10"
 readme = "README.md"
 license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
 authors = [{name = "Kaito-Rowing"}]
 dependencies = [
   "numpy>=1.24",
