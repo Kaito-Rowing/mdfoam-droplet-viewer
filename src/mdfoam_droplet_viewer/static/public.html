@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>mdFOAM Droplet Viewer</title><link rel="icon" href="/static/favicon.svg"><link rel="stylesheet" href="/static/public.css"><script src="/vendor/plotly.min.js"></script></head>
+<body>
+<header><div class="brand"><span class="mark" aria-hidden="true"></span><h1>mdFOAM Droplet Viewer</h1></div><span class="badge" data-word="ai">AI ready · JSON CLI + MCP</span><span class="spacer"></span><span class="status" id="progress">Ready</span><button id="language">日本語</button></header>
+<div class="shell"><aside>
+  <section><p class="eyebrow">01 / INPUT</p><h2 data-word="data">Data</h2>
+    <div class="field"><label for="source">Source</label><select id="source"><option value="local">Local folder</option><option value="remote">SSH / SFTP</option></select></div>
+    <div id="ssh" hidden>
+      <div class="field"><label for="ssh-host">Host / SSH alias</label><input id="ssh-host" autocomplete="off"></div>
+      <div class="row"><div class="field"><label for="ssh-user">User</label><input id="ssh-user"></div><div class="field"><label for="ssh-port">Port</label><input id="ssh-port" type="number" value="22"></div></div>
+      <div class="field"><label for="ssh-key">Private key path (optional)</label><input id="ssh-key"></div>
+      <div class="field"><label for="ssh-password">Password (not saved)</label><input id="ssh-password" type="password" autocomplete="off"></div>
+      <div class="toolbar"><button id="ssh-connect">Connect</button><button id="ssh-hosts">SSH aliases</button><button id="ssh-list">List</button></div><pre id="remote-files"></pre>
+    </div>
+    <div class="field"><label for="path" data-word="local">Local folder</label><input id="path" placeholder="Path to a case or parent folder"></div>
+    <div class="toolbar"><button id="scan" class="primary" data-word="scan">Scan</button><input id="subpath" value="auto" aria-label="Data subfolder" style="width:110px"></div>
+    <div class="field"><label for="case">Reference / active case</label><select id="case"></select></div>
+    <details><summary data-word="inspect">System information</summary><button id="inspect">Refresh</button><pre id="system">Scan a dataset to inspect fields, species and zones.</pre></details>
+  </section>
+  <section><p class="eyebrow">02 / CONFIGURE</p><h2 data-word="settings">Analysis settings</h2>
+    <p class="note" data-word="notes">Inspect candidates, choose fields and density thresholds, then analyze. Inputs use SI units.</p>
+    <div class="field"><label for="density_field">Phase density field *</label><select id="density_field"></select></div>
+    <div class="field"><label for="number_density_field">Number density field (optional)</label><select id="number_density_field"></select></div>
+    <div class="field"><label for="temperature_field">Temperature field</label><select id="temperature_field"></select></div>
+    <div class="field"><label for="species">Molecular species (optional)</label><select id="species"></select></div>
+    <div class="field"><label for="molecule_mass">Molecule mass [kg] · blank = from data</label><input id="molecule_mass" type="number" step="any"></div>
+    <div class="field"><label for="liquid_min">Liquid density ≥ * [field units]</label><input id="liquid_min" type="number" step="any"></div>
+    <div class="row"><div class="field"><label for="gas_min">Gas density ≥</label><input id="gas_min" type="number" step="any"></div><div class="field"><label for="gas_max">Gas density ≤ *</label><input id="gas_max" type="number" step="any"></div></div>
+    <div class="field"><label for="region_zones">Temperature / gas zones · none = all</label><select id="region_zones" multiple></select></div>
+    <div class="field"><label for="droplet_zones">Droplet zones · none = all</label><select id="droplet_zones" multiple></select></div>
+    <div class="row"><div class="field"><label for="substrate_normal">Substrate normal</label><select id="substrate_normal"><option>+z</option><option>-z</option><option>+x</option><option>-x</option><option>+y</option><option>-y</option></select></div><div class="field"><label for="substrate_position">Plane position [m] · blank = auto</label><input id="substrate_position" type="number" step="any"></div></div>
+    <label class="check"><input id="temperature_enabled" type="checkbox" checked>Temperature analysis</label><label class="check"><input id="pressure_enabled" type="checkbox" checked>Ideal-gas pressure estimate</label>
+    <details><summary>Presets</summary><button id="preset" class="full" data-word="preset">Apply example water preset</button><p class="hint">Illustrative settings, not universal physical constants. Confirm thresholds for your model and temperature.</p><button id="generic" data-word="generic">Reset to generic</button></details>
+    <details><summary data-word="advanced">All settings (JSON, SI)</summary><textarea id="advanced-settings" rows="18" aria-label="All settings JSON"></textarea><button id="apply-advanced">Apply JSON</button></details>
+    <div class="toolbar"><button id="validate" data-word="validate">Validate</button><button id="settings-export">JSON ↓</button><label for="settings-import" class="small">JSON ↑</label><input id="settings-import" type="file" accept=".json" style="max-width:120px"></div>
+    <div class="toolbar"><button id="analyze" class="primary" data-word="analyze">Analyze</button><button id="stop" data-word="stop" disabled>Stop</button></div>
+  </section>
+  <details><summary data-word="log">Job log</summary><pre id="logs"></pre></details>
+  <div class="links"><a href="https://github.com/Kaito-Rowing/mdfoam-droplet-viewer#ai--automation">AI guide</a><a href="/docs" target="_blank">HTTP API</a></div>
+</aside><main>
+  <div class="intro"><p class="eyebrow">INSPECT / ANALYZE / EXTEND</p><h2>From simulation to comparison.</h2><p class="note" data-word="notes">Inspect candidates, choose fields and density thresholds, then analyze. Inputs use SI units.</p></div>
+  <div id="message" role="status" hidden></div>
+  <section class="card"><div class="toolbar"><h2 data-word="overview">Overview</h2><span class="badge" id="count">0 cases</span><select id="quantity" aria-label="Plot quantity" style="width:180px"></select><button id="overview-png">PNG</button><button id="csv">CSV ZIP</button></div><div id="overview-plot" class="plot"></div><details><summary>Case summaries</summary><div id="summary-table" class="tablewrap"></div></details><details><summary>Active case rows (first 500)</summary><div id="rows-table" class="tablewrap"></div></details></section>
+  <section class="card"><div class="toolbar"><h2 data-word="visualization">Visualization</h2><select id="viz-mode" aria-label="Visualization mode" style="width:140px"><option value="fit">2D fit</option><option value="slice">Density slice</option><option value="3d">3D</option></select><select id="plane" aria-label="Projection" style="width:80px"><option>xz</option><option>yz</option><option>xy</option></select><button id="show-frame">Show</button><button id="viz-png">PNG</button><button id="viz-gif">GIF</button></div>
+    <div class="row"><div class="field"><label for="time">Timestep · <span id="time-label"></span></label><input id="time" type="range" min="0" max="0" value="0"></div><div class="field"><label for="slice">Slice layer</label><input id="slice" type="range" min="0" max="0" value="0"></div></div><label class="check"><input id="molecules" type="checkbox">Include molecules (3D)</label><div id="viz-plot" class="plot"></div><details><summary>Contact fit / coordinate frame</summary><pre id="contact"></pre></details>
+  </section>
+  <section class="card"><p class="eyebrow">03 / YOUR MODEL</p><div class="toolbar"><h2 data-word="models">Models & fit</h2><select id="registered-models" aria-label="Registered models" style="width:220px"></select><button id="load-model" data-word="loadModel">Load model</button></div><p class="note" data-word="modelNote">Use x and named parameters, e.g. a*exp(-k*x). For complex models install a Python extension.</p>
+    <div class="row"><div class="field"><label for="model-id">Model ID</label><input id="model-id" value="exponential-demo"></div><div class="field"><label for="model-label">Label</label><input id="model-label" value="Exponential decay (example)"></div></div>
+    <div class="field"><label for="expression" data-word="expression">Expression</label><input id="expression" value="a*exp(-k*x)"></div>
+    <div class="row"><div class="field"><label for="model-x">x quantity</label><select id="model-x"></select></div><div class="field"><label for="model-y">y quantity</label><select id="model-y"></select></div></div>
+    <div class="row"><div class="field"><label for="x-unit">x unit label (SI)</label><input id="x-unit" value="s"></div><div class="field"><label for="y-unit">y unit label (SI)</label><input id="y-unit" value="m^3"></div></div>
+    <div class="field"><label for="parameters" data-word="parameters">Parameters (JSON: initial, lower, upper, unit)</label><textarea id="parameters" rows="5">{"a":{"initial":1e-26,"lower":0,"unit":"m^3"},"k":{"initial":1e9,"lower":0,"unit":"1/s"}}</textarea></div>
+    <div class="toolbar"><button id="register" data-word="register">Register / update model</button><button id="evaluate" data-word="evaluate">Evaluate selected case</button></div>
+    <div class="row"><div class="field"><label for="window-min">Fit x minimum (optional, SI)</label><input id="window-min" type="number" step="any"></div><div class="field"><label for="window-max">Fit x maximum (optional, SI)</label><input id="window-max" type="number" step="any"></div></div>
+    <div class="toolbar"><button id="fit" class="primary" data-word="fit">Fit selected case</button><button id="model-png">PNG</button></div><div id="model-plot" class="plot"></div><details><summary>Fit result / reproducible definition</summary><pre id="fit-result"></pre></details>
+  </section>
+  <section class="card"><h2 data-word="saved">Saved analyses</h2><div class="row"><div><div class="field"><label for="save-name">Snapshot name</label><input id="save-name" value="analysis"></div><label class="check"><input id="overwrite" type="checkbox">Overwrite existing snapshot</label><button id="save" data-word="save">Save snapshot</button></div><div><div class="field"><label for="saved-name">Open snapshot</label><select id="saved-name"></select></div><button id="open" data-word="open">Open</button></div></div><div class="field" style="margin-top:20px"><label for="compare-names">Compare snapshots (Ctrl / Cmd to select several)</label><select id="compare-names" multiple></select></div><button id="compare" data-word="compare">Compare selected</button></section>
+  <footer>Local application · ASCII OpenFOAM fields · All model inputs use SI units · v0.1.0</footer>
+</main></div><script src="/static/public.js"></script></body></html>

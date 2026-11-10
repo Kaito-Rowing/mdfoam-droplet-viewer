@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mdfoam-droplet-viewer"
+version = "0.1.0"
+description = "Extensible mdFOAM droplet analysis for humans and AI: GUI, JSON CLI and MCP"
+requires-python = ">=3.10"
+readme = "README.md"
+license = "MIT"
+authors = [{name = "Kaito-Rowing"}]
+dependencies = [
+  "numpy>=1.24",
+  "scipy>=1.10",
+  "fastapi>=0.110",
+  "uvicorn>=0.27",
+  "paramiko>=3.4",
+  "matplotlib>=3.7",
+  "pillow>=10",
+  "plotly>=5.18",
+  "pyyaml>=6",
+  "pydantic>=2.11,<3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "httpx>=0.27", "build", "mcp>=1.20,<2"]
+mcp = ["mcp>=1.20,<2"]
+
+[project.scripts]
+mdfoam-droplet-viewer = "mdfoam_droplet_viewer.__main__:main"
+mdfoam-droplet = "mdfoam_droplet_viewer.cli:main"
+
+mdfoam-droplet-mcp = "mdfoam_droplet_viewer.mcp_server:main"
+
+[project.urls]
+Repository = "https://github.com/Kaito-Rowing/mdfoam-droplet-viewer"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["mdfoam_droplet_viewer*"]
+
+[tool.setuptools.package-data]
+mdfoam_droplet_viewer = ["static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
